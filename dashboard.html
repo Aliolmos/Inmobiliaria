@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — InmoMarket</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dashboard-layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+        .sidebar { background: var(--dark); color: white; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+        .sidebar a { color: #94a3b8; padding: 0.75rem 1rem; border-radius: 6px; display: flex; align-items: center; gap: 0.75rem; transition: var(--transition); }
+        .sidebar a:hover, .sidebar a.active { background: var(--primary); color: white; }
+        .dashboard-content { padding: 2.5rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .stat-card h3 { font-size: 2rem; color: var(--primary); margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <h2><i class="fa-solid fa-building-shield"></i> Panel</h2>
+            <hr style="border:0; border-top:1px solid #334155; margin: 1rem 0;">
+            <a href="dashboard.html" class="active"><i class="fa-solid fa-chart-line"></i> Inicio</a>
+            <a href="mis-propiedades.html"><i class="fa-solid fa-house-chimney"></i> Mis Propiedades</a>
+            <a href="nueva-propiedad.html"><i class="fa-solid fa-plus"></i> Nueva Propiedad</a>
+            <a href="consultas.html"><i class="fa-solid fa-comments"></i> Consultas</a>
+            <a href="suscripcion.html"><i class="fa-solid fa-credit-card"></i> Suscripción</a>
+            <a href="index.html" style="margin-top: auto;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir al Sitio</a>
+        </aside>
+
+        <main class="dashboard-content">
+            <h1>Hola, Inmobiliaria Norte</h1>
+            <p style="color: var(--gray); margin-bottom: 2rem;">Resumen de la actividad de tu inmobiliaria en la plataforma.</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <p style="color: var(--gray); font-size: 0.9rem;">Propiedades Totales</p>
+                    <h3 id="stat-total">32</h3>
+                </div>
+                <div class="stat-card">
+                    <p style="color: var(--gray); font-size: 0.9rem;">Activas</p>
+                    <h3 id="stat-active" style="color: var(--success);">18</h3>
+                </div>
+                <div class="stat-card">
+                    <p style="color: var(--gray); font-size: 0.9rem;">Consultas Recibidas</p>
+                    <h3>245</h3>
+                </div>
+                <div class="stat-card">
+                    <p style="color: var(--gray); font-size: 0.9rem;">Visualizaciones</p>
+                    <h3>12.450</h3>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

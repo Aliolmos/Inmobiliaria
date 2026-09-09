@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propiedades — InmoMarket</title>
+  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .catalog-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        .filters-panel {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .filter-group {
+            margin-bottom: 1.25rem;
+        }
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .filter-group input, .filter-group select {
+            width: 100%;
+            padding: 0.55rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-building-shield"></i> InmoMarket</a>
+            <nav class="nav-menu">
+                <a href="propiedades.html">Propiedades</a>
+                <a href="inmobiliarias.html">Inmobiliarias</a>
+                <a href="planes.html">Planes</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="favoritos.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-heart"></i> Favoritos</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 id="results-count" class="section-title">Propiedades Encontradas</h1>
+        
+        <div class="catalog-layout">
+            <aside class="filters-panel">
+                <h3>Filtrar Búsqueda</h3>
+                <hr style="margin: 1rem 0; border:0; border-top:1px solid #e2e8f0;">
+                
+                <div class="filter-group">
+                    <label>Operación</label>
+                    <select id="filter-operation" onchange="applyFilters()">
+                        <option value="">Todas</option>
+                        <option value="comprar">Comprar</option>
+                        <option value="alquiler">Alquiler</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Tipo</label>
+                    <select id="filter-type" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="departamento">Departamento</option>
+                        <option value="casa">Casa</option>
+                        <option value="terreno">Terreno</option>
+                        <option value="local">Local</option>
+                        <option value="oficina">Oficina</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Ubicación / Ciudad</label>
+                    <input type="text" id="filter-city" placeholder="Ej: Córdoba" oninput="applyFilters()">
+                </div>
+
+                <div class="filter-group">
+                    <label>Precio Máximo ($ / USD)</label>
+                    <input type="number" id="filter-max-price" placeholder="Ej: 500000" oninput="applyFilters()">
+                </div>
+
+                <div class="filter-group">
+                    <label>Habitaciones</label>
+                    <select id="filter-bedrooms" onchange="applyFilters()">
+                        <option value="">Indiferente</option>
+                        <option value="1">1 o más</option>
+                        <option value="2">2 o más</option>
+                        <option value="3">3 o más</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="checkbox-group"><input type="checkbox" id="filter-pool" onchange="applyFilters()"> Piscina</label>
+                    <label class="checkbox-group"><input type="checkbox" id="filter-pets" onchange="applyFilters()"> Apto Mascotas</label>
+                </div>
+
+                <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 1rem;" onclick="resetFilters()">Limpiar Filtros</button>
+            </aside>
+
+            <section>
+                <div id="properties-grid" class="grid-cards"></div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        // Leer parámetros de URL al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('operation')) document.getElementById('filter-operation').value = params.get('operation');
+            if (params.get('type')) document.getElementById('filter-type').value = params.get('type');
+            if (params.get('city')) document.getElementById('filter-city').value = params.get('city');
+            applyFilters();
+        });
+
+        function applyFilters() {
+            const operation = document.getElementById('filter-operation').value;
+            const type = document.getElementById('filter-type').value;
+            const city = document.getElementById('filter-city').value.toLowerCase();
+            const maxPrice = Number(document.getElementById('filter-max-price').value) || Infinity;
+            const bedrooms = Number(document.getElementById('filter-bedrooms').value) || 0;
+            const pool = document.getElementById('filter-pool').checked;
+            const pets = document.getElementById('filter-pets').checked;
+
+            let props = getProperties();
+
+            const filtered = props.filter(p => {
+                if (operation && p.operation !== operation) return false;
+                if (type && p.type !== type) return false;
+                if (city && !p.city.toLowerCase().includes(city) && !p.neighborhood.toLowerCase().includes(city)) return false;
+                if (p.price > maxPrice) return false;
+                if (p.bedrooms < bedrooms) return false;
+                if (pool && !p.pool) return false;
+                if (pets && !p.pets) return false;
+                return true;
+            });
+
+            const grid = document.getElementById('properties-grid');
+            const countTitle = document.getElementById('results-count');
+
+            countTitle.innerText = `${filtered.length} propiedad${filtered.length !== 1 ? 'es' : ''} encontrada${filtered.length !== 1 ? 's' : ''}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 4rem; background: white; border-radius: 10px;"><h3>No encontramos propiedades con esos criterios.</h3><p style="color: #64748b; margin-top: 0.5rem;">Intenta modificando los filtros de búsqueda.</p></div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => createPropertyCard(p)).join('');
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-operation').value = '';
+            document.getElementById('filter-type').value = '';
+            document.getElementById('filter-city').value = '';
+            document.getElementById('filter-max-price').value = '';
+            document.getElementById('filter-bedrooms').value = '';
+            document.getElementById('filter-pool').checked = false;
+            document.getElementById('filter-pets').checked = false;
+            applyFilters();
+        }
+
+        function renderCards() {
+            applyFilters();
+        }
+    </script>
+</body>
+</html>

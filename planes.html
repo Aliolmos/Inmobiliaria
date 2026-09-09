@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes y Precios — InmoMarket</title>
+   <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .plan-card { background: white; padding: 2.5rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; border: 2px solid transparent; transition: var(--transition); }
+        .plan-card.featured { border-color: var(--primary); transform: scale(1.03); }
+        .plan-price { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin: 1.5rem 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-building-shield"></i> InmoMarket</a>
+            <nav class="nav-menu">
+                <a href="propiedades.html">Propiedades</a>
+                <a href="inmobiliarias.html">Inmobiliarias</a>
+                <a href="planes.html" class="active">Planes</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="text-align: center;">
+        <h1 class="section-title">Elegí el plan ideal para tu inmobiliaria</h1>
+        <p style="color: var(--gray); max-width: 600px; margin: 0 auto;">Potenciá tus ventas y llega a miles de compradores e inquilinos potenciales cada día.</p>
+
+        <div class="plans-grid">
+            <div class="plan-card">
+                <h3>BÁSICO</h3>
+                <div class="plan-price">$25.000 <span style="font-size: 1rem; color: var(--gray);">/ mes</span></div>
+                <p style="color: var(--gray); margin-bottom: 2rem;">Ideal para inmobiliarias que inician.</p>
+                <ul style="text-align: left; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Hasta 10 propiedades activas</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Perfil de inmobiliaria</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Consultas por WhatsApp</li>
+                </ul>
+                <button class="btn btn-outline" style="width: 100%;" onclick="simularSuscripcion('Básico')">Elegir Plan</button>
+            </div>
+
+            <div class="plan-card featured">
+                <span style="background: var(--primary); color: white; padding: 0.25rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">MÁS POPULAR</span>
+                <h3>PROFESIONAL</h3>
+                <div class="plan-price">$45.000 <span style="font-size: 1rem; color: var(--gray);">/ mes</span></div>
+                <p style="color: var(--gray); margin-bottom: 2rem;">Para agencias consolidadas.</p>
+                <ul style="text-align: left; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Hasta 50 propiedades activas</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Posicionamiento destacado</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Estadísticas avanzadas</li>
+                </ul>
+                <button class="btn btn-primary" style="width: 100%;" onclick="simularSuscripcion('Profesional')">Elegir Plan</button>
+            </div>
+
+            <div class="plan-card">
+                <h3>EMPRESA</h3>
+                <div class="plan-price">$75.000 <span style="font-size: 1rem; color: var(--gray);">/ mes</span></div>
+                <p style="color: var(--gray); margin-bottom: 2rem;">Sin límites para grandes desarrollos.</p>
+                <ul style="text-align: left; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Propiedades ilimitadas</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Banner principal en la Home</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--success);"></i> Soporte prioritario 24/7</li>
+                </ul>
+                <button class="btn btn-outline" style="width: 100%;" onclick="simularSuscripcion('Empresa')">Elegir Plan</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        function simularSuscripcion(plan) {
+            showToast(`¡Plan ${plan} seleccionado con éxito!`);
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+        }
+    </script>
+</body>
+</html>

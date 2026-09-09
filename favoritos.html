@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoritos — InmoMarket</title>
+   <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-building-shield"></i> InmoMarket</a>
+            <nav class="nav-menu">
+                <a href="propiedades.html">Propiedades</a>
+                <a href="inmobiliarias.html">Inmobiliarias</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="section-title">Mis Propiedades Guardadas</h1>
+        <div id="favorites-grid" class="grid-cards"></div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        function renderCards() {
+            const favIds = getFavorites();
+            const props = getProperties();
+            const favProps = props.filter(p => favIds.includes(p.id));
+            const grid = document.getElementById('favorites-grid');
+
+            if (favProps.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 4rem; background: white; border-radius: 10px;"><h3>Todavía no guardaste ninguna propiedad.</h3><p style="color: #64748b; margin-top: 0.5rem;">Explora el catálogo y haz clic en el corazón para guardar tus favoritas.</p></div>`;
+                return;
+            }
+
+            grid.innerHTML = favProps.map(p => createPropertyCard(p)).join('');
+        }
+        renderCards();
+    </script>
+</body>
+</html>

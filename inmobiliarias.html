@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inmobiliarias — InmoMarket</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-building-shield"></i> InmoMarket</a>
+            <nav class="nav-menu">
+                <a href="propiedades.html">Propiedades</a>
+                <a href="inmobiliarias.html" class="active">Inmobiliarias</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="section-title">Encontrá una Inmobiliaria</h1>
+        <div id="agencies-grid" class="grid-cards"></div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        const agencies = getAgencies();
+        const props = getProperties();
+        const grid = document.getElementById('agencies-grid');
+
+        grid.innerHTML = agencies.map(agency => {
+            const agencyProps = props.filter(p => p.agencyId === agency.id);
+            return `
+                <div class="card" style="text-align: center; padding: 2rem 1.5rem;">
+                    <img src="${agency.logo}" alt="${agency.name}" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem auto; box-shadow: var(--shadow);">
+                    <h3 style="margin-bottom: 0.5rem;">${agency.name}</h3>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem;"><i class="fa-solid fa-location-dot"></i> ${agency.city}</p>
+                    <p style="font-size: 0.85rem; color: var(--gray-dark); margin-bottom: 1.5rem;">${agency.description}</p>
+                    <p style="font-weight: 700; color: var(--primary); margin-bottom: 1.5rem;">${agencyProps.length} propiedades publicadas</p>
+                    <a href="inmobiliaria.html?id=${agency.id}" class="btn btn-primary" style="width: 100%;">Ver inmobiliaria</a>
+                </div>
+            `;
+        }).join('');
+    </script>
+</body>
+</html>
